@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- TODO(you): Make whatever changes needed to complete the assignment! -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML Quiz</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="images/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="images/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer="true"></script>
+  </head>
+
+  <body>
+    <header>
+      <div id="heading">
+        <span id="wpr">WPR</span>
+        <span class="mern-letters"> N </span>
+        <span class="mern-letters"> R </span>
+        <span class="mern-letters"> E </span>
+        <span class="mern-letters"> M </span>
+      </div>
+    </header>
+
+    <article>
+      <!-- General screen -->
+      <section id="quiz-name">
+        <h1 id="quiz-title">HTML Quiz</h1>
+      </section>
+
+      <!-- ---------------------- Screen 1 ---------------------- -->
+      <section id="introduction">
+        <div id="author">By Le Xuan Tri</div>
+        <h2 class="title">The Test</h2>
+        <div class="text">
+          The test contains 10 questions and there is no time limit.
+        </div>
+        <div class="text">
+          The test is not official, it's just a nice way to see how much you
+          know, or don't know, about HTML.
+        </div>
+        <h2 class="title">Count Your Score</h2>
+        <div class="long-text">
+          You will get 1 point for each correct answer. At the end of the Quiz,
+          your total score will be displayed. Maximum score is 10 points.
+        </div>
+        <div id="background">
+          <h2 class="titleCenter">Start the quiz</h2>
+
+          <div class="textCenter">Good luck!</div>
+          <div class="start">
+            <button id="start-btn">Start the HTML quiz ❯</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------- Screen 2 ---------------------- -->
+      <section id="attempt-quiz">
+        <div id="questions"></div>
+
+        <div id="submit">
+          <button id="submit-btn">Submit your answer here ❯</button>
+        </div>
+      </section>
+
+      <!-- ---------------------- Screen 3 ---------------------- -->
+      <section id="review-quiz">
+        <div id="result">
+          <h2>Result:</h2>
+          <div id="score" class="result-info"></div>
+          <div id="score-percent" class="result-info"></div>
+          <div id="score-text" class="result-info"></div>
+          <button id="try" class="result-info">Try Again</button>
+        </div>
+      </section>
+    </article>
+  </body>
+</html>
