@@ -10,27 +10,27 @@ app.use(express.json());
 
 const DBS_NAME = 'wpr-quiz';
 const DBS_URL = `mongodb://localhost:27017/${DBS_NAME}`;
-let dbs = null;
-let questions = null;
+let dbs = null
 let attempts = null
-async function createdServer() {
+let questions = null
+async function connectDB() {
   try {
     const client = await MongoClient.connect(DBS_URL);
     dbs = client.db();
-    questions = dbs.collection("questions");
     attempts = dbs.collection("attempts");
+    questions = dbs.collection("questions");
     console.log('MongoDB connected!');
   } catch (error) {
     console.log('Fail to connect!');
   }
 }
-createdServer();
+connectDB();
 
 app.post('/attempts', async (req, res) => {
   try {
     const questionList = await questions.aggregate([{ $sample: { size: 10 } }]).toArray();
     const correctAnswers = {};
-    const startedAt = Date();
+    const startAt = Date();
     for (const question of questionList) {
       correctAnswers[question._id] = question.correctAnswer;
       delete question.correctAnswer;
@@ -38,24 +38,21 @@ app.post('/attempts', async (req, res) => {
     await attempts.insertOne({
       questions: questionList,
       correctAnswers: correctAnswers,
-      startedAt: startedAt,
+      startAt: startAt,
       completed: false,
-      __v: 0
     });
-    const finalAttempt = await attempts.find().sort({ '_id': -1 }).limit(1).toArray();
+    const finalAttempt = await attempts.find().sort({ '_id': -1 }).toArray();
     const submitObject = {
       _id: finalAttempt[0]._id,
       questions: questionList,
-      startedAt: startedAt,
+      startAt: startAt,
       score: 0,
       completed: false,
-      __v: 0
     };
     res.status(200).json(submitObject);
   } catch (error) {
     console.log(error);
   }
-
 });
 
 app.get('/attempts/:id', async (req, res) => {
@@ -71,10 +68,9 @@ app.get('/attempts/:id', async (req, res) => {
           _id: attempt._id,
           questions: questionList,
           answers: attempt.answers,
-          startedAt: attempt.startedAt,
+          startAt: attempt.startAt,
           score: 0,
           completed: true,
-          __v: 0
         };
         res.status(200).json(submitObject);
       });
@@ -94,7 +90,6 @@ app.post('/attempts/:id', async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-
 });
 
 
@@ -105,10 +100,10 @@ app.post('/attempts/:id/submit', async (req, res) => {
     let submitObject = {};
     let scoreNumber = 0;
     let scoreComment = "";
-    let startedAt = 0;
+    let startAt = 0;
     await attempts.findOne({ _id: ObjectId(attemptID) }, 
     function (err, attempt) {
-      startedAt = attempt.startedAt;
+      startAt = attempt.startAt;
       for (chosenAnswer in checkedAnswer) {
         if (attempt.correctAnswers[chosenAnswer] == checkedAnswer[chosenAnswer]) {
           scoreNumber++;
@@ -138,9 +133,8 @@ app.post('/attempts/:id/submit', async (req, res) => {
         correctAnswers: attempt.correctAnswers,
         score: scoreNumber,
         scoreText: scoreComment,
-        startedAt: startedAt,
+        startAt: startAt,
         completed: true, 
-        __v: 0,
       };
       res.status(200).json(submitObject);
     });
